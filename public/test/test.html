@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title> REST API TEST </title>
+</head>
+<script type="text/javascript" src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+<script type="text/javascript">
+
+$(document).ready(function(){
+	
+	console.log('document is now ready');
+	$('#getCall').click(function(argument) {
+		console.log('rest get');
+		$.ajax({
+			type:"GET",
+			//async:false,
+			///url:"http://localhost:9000/v1/users/"+ document.getElementById('getEndMethod').value,  //getall",
+			url:"http://localhost:9000/home?name=shan",
+			contentType:"application/json; charset=utf-8",
+			//dataType:"json",
+			////data:{'name': 'shan', 'email':'shanniz@a.com'},
+			//processData:true,
+			success:function(result){
+				result = JSON.parse(result);
+				console.log(result);
+				//debugger;
+				
+			}
+		});
+	});
+
+	$('#postCall').click(function(argument) {
+		console.log('rest post');
+		$.ajax({
+			type:"POST",
+			//async:false,
+			///url:"http://localhost:9000/v1/users/create" ,//+ document.getElementById('postEndMethod').value, // create",
+			url:"http://localhost:9000/home" ,
+			contentType:"application/json; charset=utf-8",
+			data: {'firstName': 'shan', 'email':'shanniz'},
+			//dataType:"json",
+			//processData:true,
+			success:function(result){
+				//res = JSON.parse(result);
+				//console.log(res);
+				console.log(result);
+			}
+		});
+	});
+});
+	
+
+</script>
+<body>
+
+<button id="getCall"> Get REST Call </button> <input type="text" id="getEndMethod" placeholder='get end method' value="getall">
+<br>
+<button id="postCall"> Post REST Call </button>  <input type="text" id="postEndMethod" placeholder='post end method' value="create">
+<br>
+<button id="updateCall"> Post REST Call </button>
+<br>
+<button id="deleteCall"> Delete REST Call </button>
+
+
+
+</body>
+</html>
+

@@ -1,0 +1,124 @@
+{% extends '/templates/app.twig' %}
+
+{% block content %}
+	
+    
+    <!-- Errors from server, display in error view bars -->
+    {% if errors.email %}
+    <div class="alert alert-danger fade in">
+        <a href="#" class="close" data-dismiss="alert">&times;</a>
+        <strong>Error!</strong> {{ errors.email | first }}
+    </div>
+    {% endif %}
+
+    {% if errors.password %}
+    <div class="alert alert-danger fade in">
+        <a href="#" class="close" data-dismiss="alert">&times;</a>
+        <strong>Error!</strong> {{ errors.password | first }}
+    </div>
+    {% endif %}
+
+    {% if errors.first_name %}
+    <div class="alert alert-danger fade in">
+        <a href="#" class="close" data-dismiss="alert">&times;</a>
+        <strong>Error!</strong> {{ errors.first_name | first }}
+    </div>
+    {% endif %}
+
+    {% if errors.last_name %}
+    <div class="alert alert-danger fade in">
+        <a href="#" class="close" data-dismiss="alert">&times;</a>
+        <strong>Error!</strong> {{ errors.last_name | first }}
+    </div>
+    {% endif %}
+
+
+  <div class="row">
+        <div class="col-xs-14 col-sm-14 col-md-5 well well-sm pull-right">
+            <legend><i class="glyphicon glyphicon-globe"></i> Sign up!</legend>
+
+            <form action="{{ path_for('auth.signup') }}" method="post" class="form" role="form">
+                <div class="row form-group">
+                    <div class="col-xs-4 col-md-4">
+                        <input class="form-control" name="first_name" placeholder="First Name" type="text" value="testFname"
+                            required autofocus />
+                    </div>
+                    
+                    <div class="col-xs-4 col-md-4">
+                        <input class="form-control" name="middle_name" placeholder="Middle Name" type="text" />
+                    </div>
+
+                    <div class="col-xs-4 col-md-4">
+                        <input class="form-control" name="last_name" placeholder="Last Name" type="text" value="testLname" required />
+                    </div>
+                </div>
+                <input class="form-control form-group" name="youremail" placeholder="Your Email" type="email" value="email@domain.com" required />
+                <input class="form-control form-group" name="reenteremail" placeholder="Re-enter Email" value="email@domain.com" type="email" required/>
+                <input class="form-control form-group" name="password" placeholder="Password" type="password" value="123" required />
+
+                <label for="">Birth Date</label>
+                <input class="form-control form-group" name="dateofbirth" placeholder="YYYY-MM-DD" type="text" value="2000-01-01" required />                
+                <!--
+                <div class="row form-group">
+                    <div class="col-xs-4 col-md-4">
+                        <select class="form-control">
+                            <option value="Month">Month</option>
+                        </select>
+                    </div>
+                    <div class="col-xs-4 col-md-4">
+                        <select class="form-control">
+                            <option value="Day">Day</option>
+                        </select>
+                    </div>
+                    <div class="col-xs-4 col-md-4">
+                        <select class="form-control">
+                            <option value="Year">Year</option>
+                        </select>
+                    </div>
+                </div>
+                -->
+                <label class="radio-inline">
+                    <input type="radio" name="sex" id="inlineCheckbox1" value="male" checked="checked"/>
+                    Male
+                </label>
+                <label class="radio-inline">
+                    <input type="radio" name="sex" id="inlineCheckbox2" value="female" />
+                    Female
+                </label>
+                <br />
+                <br />
+                
+                <div class="form-group">
+                    <button class="btn btn-primary btn-lg btn-block" type="submit">Sign Up</button>
+                    <span><a href="#">Need help?</a></span>
+                    <span class="pull-right"><a href="{{ base_url() }}/auth/login">Login</a></span>
+                </div>
+            </form>
+        </div>
+    </div>
+
+
+<!--
+<div class='row'>
+	<div class='col-md-6-col-md-offset-3'>
+    <h2>
+      Signup
+    </h2>
+  </div>
+</div>
+-->
+
+<!--
+<div id="box1" class="box blurred-bg tinted">
+  <div class="login-box">
+    <h1>Login</h1>
+	    <p>Drag this box</p>  
+  </div>
+  <div class="signup-box">
+    <h1>Signup</h1>
+	    <p>Drag this box</p> 
+  </div>
+</div>
+-->
+
+{% endblock %}
