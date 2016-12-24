@@ -21,23 +21,27 @@ class AuthenticationController extends Controller{
 	}
 
 	public function postLogin($request, $response){
-		$params =  $request->getParams();		
-		$validation = $this->validator->validate($request, [
-			'youremail' => v::noWhitespace()->notEmpty()->email(),
-			'password' => v::noWhitespace()->notEmpty()
-		]);
-		if ($validation->failed()) {
-			return $response->withRedirect($this->router->pathFor('auth.login'));
-		}		
-		
+		$params =  $request->getParams();	
+		$verificationErrors =null;
+
 		$creds = array('email' => $this->writeDoubleQuote($params['youremail']), 
 			'password' => $params['password']);
 		
-		if(!User::authenticateUserLogin( $creds ) ){
-			//Invalid email/password
-			return $response->withRedirect($this->router->pathFor('auth.login'));	
-			//return 'This email is already registered'; 
+		$logResp = User::authenticateUserLogin( $creds ) ;
+		if ($logResp['error']) {
+			$verificationErrors['loginError'] = $logResp['error'];
+			//return $response->withRedirect($this->router->pathFor('auth.login'));
 		}
+
+
+		$validation = $this->validator->validate($request, [
+			'youremail' => v::noWhitespace()->notEmpty()->email(),
+			'password' => v::noWhitespace()->notEmpty()
+		]
+		,$verificationErrors);
+		if ($validation->failed()) {
+			return $response->withRedirect($this->router->pathFor('auth.login'));
+		}				
 
 		return $response->withRedirect($this->router->pathFor('homepage')); 
 	}
@@ -49,27 +53,36 @@ class AuthenticationController extends Controller{
 
 	public function postSignUp($request, $response){
 		$params =  $request->getParams();
-		
+		$additionalValidErrors;
+		if(//$request->getParam('reenteremail') &&  //reenter email for signup case
+			($request->getParam('youremail')!= $request->getParam('reenteremail'))){
+			$additionalValidErrors['reenteremail'] = 'Email must be the same, mismatch found';
+			//$validation->errors['reenteremail'] = 'Email must be the same, mismatch found';
+		}
+
 		$validation = $this->validator->validate($request, [
 			'youremail' => v::noWhitespace()->notEmpty()->email(),
 			'first_name' => v::noWhitespace()->notEmpty()->alpha(),
 			'last_name' => v::noWhitespace()->notEmpty()->alpha(),
 			'password' => v::noWhitespace()->notEmpty()
-		]);
+		]
+		, $additionalValidErrors);
 		if ($validation->failed()) {
 			return $response->withRedirect($this->router->pathFor('auth.signup'));
 		}
-
-		if($params['youremail']!=$params['reenteremail']){
-			return "Email mismatch";
-		}
 		
-		if(User::get('email', $this->writeDoubleQuote($params['youremail']) ) ){
-			var_dump('This email is already registered');
-			return $response->withRedirect($this->router->pathFor('auth.signup'));	
-			//return 'This email is already registered'; 
+		if(User::get('email', $this->writeDoubleQuote($params['youremail']) ) 
+			){
+			//var_dump('This email is already registered');
+			//return $response->withRedirect($this->router->pathFor('auth.signup'));	
+			$additionalValidErrors['reregister'] = 'This email is already registered. Please enter a differnt Email.';
 		}
 
+		$validation = $this->validator->validate($request, []
+		, $additionalValidErrors);
+		if ($validation->failed()) {
+			return $response->withRedirect($this->router->pathFor('auth.signup'));
+		}
 
 		/*'firstname', 'middlename' ,  'lastname', 'youremail', 'reenteremail', 'password', 'dateofbirth' ,'sex' */
 
@@ -86,8 +99,6 @@ class AuthenticationController extends Controller{
 		    'password'=> $params['password']  
 		    )
 		);
-
-		var_dump(User::get('id', $id));
 		//var_dump($this->db->find('users', 'id=1'));
 		////$this->view->render($response, 'auth/signup.twig');
 		return $response->withRedirect($this->router->pathFor('homepage')); 

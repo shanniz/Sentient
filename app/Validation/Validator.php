@@ -10,7 +10,7 @@ class Validator ///extends AnotherClass
 {
 	protected $errors;
 	
-	public function validate($request, $rules){
+	public function validate($request, $rules, $additionalErrors){
 		foreach ($rules as $field => $rule) {
 			try{
 				$rule->setName(ucFirst($field))->assert($request->getParam($field));
@@ -18,8 +18,12 @@ class Validator ///extends AnotherClass
 			}catch(NestedValidationException $e){
 				$this->errors[$field] = $e->getMessages();
 			}
-
 		}
+		//include any additional errors pointed by the caller
+		foreach ($additionalErrors as $err => $msg) {
+				$this->errors[$err] = $msg;			
+		}
+
 		//simple way is to store in session error
 		$_SESSION['errors'] = $this->errors;
 		return $this;

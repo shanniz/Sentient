@@ -4,20 +4,21 @@
 	
 
     <!-- Errors from server, display in error view bars -->
-    {% if errors.email %}
-    <div class="alert alert-danger fade in">
-        <a href="#" class="close" data-dismiss="alert">&times;</a>
-        <strong>Error!</strong> {{ errors.email | first }}
-    </div>
-    {% endif %}
-
+    <!--
     {% if errors.password %}
     <div class="alert alert-danger fade in">
         <a href="#" class="close" data-dismiss="alert">&times;</a>
         <strong>Error!</strong> {{ errors.password | first }}
     </div>
     {% endif %}
+    -->
 
+    {% if errors.loginError %}
+    <div class="alert alert-danger fade in">
+        <a href="#" class="close" data-dismiss="alert">&times;</a>
+        <strong>Error!</strong> {{ errors.loginError }}
+    </div>
+    {% endif %}
 
   <div class="row">
         <div class="col-xs-14 col-sm-14 col-md-4 well well-sm pull-right">
@@ -26,16 +27,16 @@
             
             <form action="{{ path_for('auth.login') }}" method="post" class="form" role="form">
                 <div class="form-group{{ errors.email? ' has-error ': '' }}">
-                    <input class="form-control form-group" name="youremail" placeholder="Your Email" type="email" value="email@domain.com" required />
-                    {% if errors.email %}
-                        <span class='help-block'> {{ errors.email | first }} </span>
+                    <input class="form-control form-group" name="youremail" placeholder="email@domain.com" type="email" value="{{oldInputData.youremail}}" required />
+                    {% if errors.youremail %}
+                        <span class='help-block'> {{ errors.youremail }} </span>
                     {% endif %}
                 </div>
                 <div class="form-group{{ errors.password? ' has-error ': '' }}">
-                    <input class="form-control form-group" name="password" placeholder="Password" type="password" value="123" required />
-                    {% if errors.password %}
-                        <span class='help-block'> {{ errors.password | first }} </span>
-                    {% endif %}
+                    <input class="form-control form-group" name="password" placeholder="Password123" type="password" value="{{oldInputData.password}}" required />
+                    
+                        <span class='help-block'> {% if errors.password %}  {{ errors.password | first }} {% endif %} </span>
+                    
                 </div>
                 <br><br>
                 
