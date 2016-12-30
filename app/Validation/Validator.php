@@ -24,6 +24,8 @@ class Validator ///extends AnotherClass
 				$this->errors[$err] = $msg;			
 		}
 
+		//var_dump($this->errors);
+		//die();
 		//simple way is to store in session error
 		$_SESSION['errors'] = $this->errors;
 		return $this;

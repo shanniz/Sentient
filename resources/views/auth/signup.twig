@@ -49,8 +49,17 @@
                     </div>
                 </div>
                 
-                <input class="form-control form-group" name="youremail" placeholder="Your Email" type="email" value="email@domain.com" required />
+                <div class="form-group {{ errors.phone? ' has-error ': '' }}" >
+                    <input class="form-control form-group" name="phone" placeholder="Your Phone Number" type="tel" value="{{oldInputData.phone}}" required />
+                    {% if errors.phone %}
+                        <span class='help-block'> {{ errors.phone | first }} </span>
+                    {% endif %}
+                </div>
+
                 
+                    <input class="form-control form-group" name="youremail" placeholder="Your Email" type="email" value="email@domain.com" required />
+                
+
                 <div class="form-group{{ errors.reenteremail? ' has-error ': '' }}">
                     <input class="form-control form-group" name="reenteremail" placeholder="Re-enter Email" value="email@domain.com" type="email" required/>
                     {% if errors.reenteremail %}
@@ -65,7 +74,7 @@
                     {% endif %}
                 </div>
 
-                <label for="">Birth Date</label>
+                <label for="">Date of Birth</label>
                 <input class="form-control form-group" name="dateofbirth" placeholder="YYYY-MM-DD" type="text" value="2000-01-01" required />                
                 <!--
                 <div class="row form-group">
@@ -94,8 +103,16 @@
                     <input type="radio" name="sex" id="inlineCheckbox2" value="female" />
                     Female
                 </label>
-                <br />
-                <br />
+                <div class="form-group">                    
+                    <select class="form-control">
+                        <option value="" selected disabled>Login As</option>
+                        <option value="ustudent">Student</option>
+                        <option value="uteacher">Teacher</option>
+                        <option value="uparent">Parent</option>
+                        <option value="uadmin">Admin</option>
+                    </select>                                  
+                </div>
+                <br>
                 
                 <div class="form-group">
                     <button class="btn btn-primary btn-lg btn-block" type="submit">Sign Up</button>

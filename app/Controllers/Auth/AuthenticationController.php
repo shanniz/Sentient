@@ -24,9 +24,12 @@ class AuthenticationController extends Controller{
 		$params =  $request->getParams();	
 		$verificationErrors =null;
 
-		$creds = array('email' => $this->writeDoubleQuote($params['youremail']), 
+		//or phone
+		$creds = array('email' => $this->writeDoubleQuote($params['youremail']),
+			//,'phone' => $params['phone'] 
 			'password' => $params['password']);
 		
+
 		$logResp = User::authenticateUserLogin( $creds ) ;
 		if ($logResp['error']) {
 			$verificationErrors['loginError'] = $logResp['error'];
@@ -35,7 +38,7 @@ class AuthenticationController extends Controller{
 
 
 		$validation = $this->validator->validate($request, [
-			'youremail' => v::noWhitespace()->notEmpty()->email(),
+			'youremail' => v::noWhitespace()->notEmpty(), //it may contain phone number now //->email(),
 			'password' => v::noWhitespace()->notEmpty()
 		]
 		,$verificationErrors);
@@ -53,7 +56,7 @@ class AuthenticationController extends Controller{
 
 	public function postSignUp($request, $response){
 		$params =  $request->getParams();
-		$additionalValidErrors;
+		$additionalValidErrors = null;
 		if(//$request->getParam('reenteremail') &&  //reenter email for signup case
 			($request->getParam('youremail')!= $request->getParam('reenteremail'))){
 			$additionalValidErrors['reenteremail'] = 'Email must be the same, mismatch found';
@@ -61,6 +64,7 @@ class AuthenticationController extends Controller{
 		}
 
 		$validation = $this->validator->validate($request, [
+			'phone' => v::noWhitespace()->notEmpty()->phone(),
 			'youremail' => v::noWhitespace()->notEmpty()->email(),
 			'first_name' => v::noWhitespace()->notEmpty()->alpha(),
 			'last_name' => v::noWhitespace()->notEmpty()->alpha(),
@@ -71,7 +75,9 @@ class AuthenticationController extends Controller{
 			return $response->withRedirect($this->router->pathFor('auth.signup'));
 		}
 		
-		if(User::get('email', $this->writeDoubleQuote($params['youremail']) ) 
+		if(User::get('email', $this->writeDoubleQuote($params['youremail']) 
+			//User::get('phone', $this->writeDoubleQuote($params['phone'])
+			) 
 			){
 			//var_dump('This email is already registered');
 			//return $response->withRedirect($this->router->pathFor('auth.signup'));	

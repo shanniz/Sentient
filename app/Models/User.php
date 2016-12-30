@@ -23,13 +23,14 @@ class User{
 	}
 
 	public function authenticateUserLogin($cols){
-		$user = $this->db->findOne('users',  'email='. $cols['email'] );
 		$error = 'Invalid username/password';
 		$success="Authenticated";
+		$user = $this->db->findOne('users',  'email='. $cols['email'] );
+		if(!$user){	//check phone number instead
+			$user = $this->db->findOne('users',  'phone='. $cols['email'] );
+		}
 		//$resp = array('success' => null, 'error'=>null );
-		/*if(!$user){
-			return $response['error'] = $error;
-		}*/
+		/*if(!$user){	return $response['error'] = $error;		}*/
 		//if (password_verify( $cols['password'] , $user->password ) ) {
 		if ( $user && $cols['password'] == $user->password  ) {
 			return array('success' => $success);	//return $resp['success']=$success;
