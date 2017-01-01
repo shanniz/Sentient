@@ -10,6 +10,8 @@ class ValidationErrorsMiddleware extends Middleware
 {
 	public function __invoke($request, $response, $next){
 		//Make errors globally accessible inside the views
+		///var_dump($this->container->view->getEnvironment()->addGlobal);
+		///die();
 		$this->container->view->getEnvironment()->addGlobal('errors', $_SESSION['errors']);
 		unset($_SESSION['errors']);
 		//This must return next callable middleware

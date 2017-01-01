@@ -23,9 +23,10 @@ class User{
 	}
 
 	public function authenticateUserLogin($cols){
-		$error = 'Invalid username/password';
+		$error = 'Invalid email/phone number/password';
 		$success="Authenticated";
 		$user = $this->db->findOne('users',  'email='. $cols['email'] );
+		
 		if(!$user){	//check phone number instead
 			$user = $this->db->findOne('users',  'phone='. $cols['email'] );
 		}
@@ -46,6 +47,7 @@ class User{
   		$usr->m_name = $user['middle_name'];
   		$usr->gender = $user['gender'];
   		$usr->dob = $user['dob'];
+  		$usr->phone = $user['phone'];
   		$usr->created = $user['created'];
   		$usr->email = $user['email'];
   		//$usr->password = password_hash($user['password'], PASSWORD_DEFAULT );

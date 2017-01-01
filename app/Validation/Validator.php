@@ -20,10 +20,11 @@ class Validator ///extends AnotherClass
 			}
 		}
 		//include any additional errors pointed by the caller
-		foreach ($additionalErrors as $err => $msg) {
-				$this->errors[$err] = $msg;			
+		if($additionalErrors){
+			foreach ($additionalErrors as $err => $msg) {
+					$this->errors[$err] = $msg;			
+			}
 		}
-
 		//var_dump($this->errors);
 		//die();
 		//simple way is to store in session error

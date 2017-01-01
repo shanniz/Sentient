@@ -95,11 +95,12 @@ class AuthenticationController extends Controller{
 		///////var_dump( User::get('email', $this->writeDoubleQuote($params['youremail']) ) );
 		
 		$id = User::createUser( array (
-			'f_name'=>$params['first_name'], 
-			'l_name'=>$params['last_name'], 
-			'm_name'=>$params['middle_name'], 
+			'first_name'=>$params['first_name'], 
+			'last_name'=>$params['last_name'], 
+			'middle_name'=>$params['middle_name'], 
 			'gender'=>$params['sex'], 
 			'dob'=> $params['dateofbirth'], 
+			'phone'=> $params['phone'], 
 		    'created'=>  date("Y-m-d H:i:s"), //'2016-09-30 09:54:44', 
 		    'email'=> $params['youremail'], 
 		    'password'=> $params['password']  
