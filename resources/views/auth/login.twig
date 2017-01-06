@@ -27,7 +27,7 @@
             
             <form action="{{ path_for('auth.login') }}" method="post" class="form" role="form">
                 <div class="form-group{{ errors.email? ' has-error ': '' }}">
-                    <input class="form-control form-group" name="youremail" placeholder="email/phone" type="email" value="{{oldInputData.youremail}}" required />
+                    <input class="form-control form-group" name="youremail" placeholder="email/phone" type="text" value="{{oldInputData.youremail}}" required />
                     {% if errors.youremail %}
                         <span class='help-block'> {{ errors.youremail }} </span>
                     {% endif %}
@@ -35,15 +35,6 @@
                 <div class="form-group{{ errors.password? ' has-error ': '' }}">
                     <input class="form-control form-group" name="password" placeholder="Password123" type="password" value="{{oldInputData.password}}" required />                    
                         <span class='help-block'> {% if errors.password %}  {{ errors.password | first }} {% endif %} </span>                    
-                </div>
-                <div class="form-group">                    
-                    <select class="form-control">
-                        <option value="" selected disabled>Login As</option>
-                        <option value="ustudent">Student</option>
-                        <option value="uteacher">Teacher</option>
-                        <option value="uparent">Parent</option>
-                        <option value="uadmin">Admin</option>
-                    </select>                                  
                 </div>
                 <br>
                 
