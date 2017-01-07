@@ -6,6 +6,8 @@ use App\Models\User;
 
 use App\Controllers\Controller;
 use Respect\Validation\Validator as v;
+
+
 /**
 * 
 */
@@ -65,7 +67,9 @@ class AuthenticationController extends Controller{
 
 		$validation = $this->validator->validate($request, [
 			'phone' => v::noWhitespace()->notEmpty()->phone(),
-			'youremail' => v::noWhitespace()->notEmpty()->email(),
+			/////Email available is our custom EmailAvailable Rule; class name becomes rule name
+			'youremail' => v::noWhitespace()->notEmpty()->email(), ////////->EmailAvailable(),
+			//'youremail' => v::
 			'first_name' => v::noWhitespace()->notEmpty()->alpha(),
 			'last_name' => v::noWhitespace()->notEmpty()->alpha(),
 			'password' => v::noWhitespace()->notEmpty()

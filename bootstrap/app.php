@@ -1,11 +1,14 @@
 <?php
 
-/*Every request lands at index.php file, 
-which redirects it here, to bootstrap, on app.php. 
+/*Every request lands at index.php file,  which redirects it here, to bootstrap, on app.php. 
 From here it finally serves the route from from routes.php */
 /*// Instantiate the app
+
 $settings = require __DIR__ . '/../src/settings.php';
 $app = new \Slim\App($settings);*/
+
+//Just To use our custom EmailAvaible rule
+use Respect\Validation\Validator as v;
 
 session_start();
 
@@ -69,6 +72,10 @@ $container['db'] = function($container) use ($rb){
 };
 
 
+/*$container['EmailAvailable'] = function($container){
+    return new App\Validation\Rules\EmailAvailable($container);
+};*/
+
 $container['validator'] = function($container) {
     return new App\Validation\Validator;
 };
@@ -86,6 +93,9 @@ $container['AuthenticationController'] = function($container){
 
 $app->add(new \App\Middleware\ValidationErrorsMiddleware($container));
 $app->add(new \App\Middleware\OldInputMiddleware($container));
+
+//For custom validation rules like Email is available
+v::with('App\\Validation\\Rules\\');
 
 require __DIR__ . '/../app/routes.php';
 
