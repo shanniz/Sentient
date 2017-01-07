@@ -77,11 +77,12 @@ class AuthenticationController extends Controller{
 		
 		if(User::get('email', $this->writeDoubleQuote($params['youremail']) 
 			//User::get('phone', $this->writeDoubleQuote($params['phone'])
-			) 
-			){
-			//var_dump('This email is already registered');
+			)){
 			//return $response->withRedirect($this->router->pathFor('auth.signup'));	
 			$additionalValidErrors['reregister'] = 'This email is already registered. Please enter a differnt Email.';
+		}
+		if(User::get('phone', $this->writeDoubleQuote($params['phone'])) ){
+			$additionalValidErrors['reregister'] = 'This phone number is already registered. Please enter a differnt Phone number.';
 		}
 
 		$validation = $this->validator->validate($request, []
