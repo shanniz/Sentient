@@ -26,8 +26,10 @@ class HomeController extends Controller{
 		///$id = User::create( array ('f_name'=>'Ftest11', 'l_name'=>'Ltest11', 'm_name'=>'sdf', 'gender'=>'F', 'dob'=>'2002-08-26', 
 		///	'created'=>  date("Y-m-d H:i:s"), //'2016-09-30 09:54:44', 
 		///	'email'=>'a@a.c', 'password'=>'123'));
-		//var_dump(User::toJson(array('desc' => 'demo to json from function' )));
-		///var_dump(User::get('id', $id));
+		//global $rb;
+		//$user = User::where('email', 'email@domain.com')->first();
+		//var_dump($rb->findOne('users', 'email="email@domain.com"'));
+		//die();
 		
 		$this->container->view->render($response, 'home.twig');
 		/////return json_encode(  array('Home controller-Name ' => $request->getParam('name')) );

@@ -36,6 +36,20 @@ class Validator ///extends AnotherClass
 		return !empty($this->errors);
 	}
 
+	//mine, 
+	public function addAdditionalErrors($additionalErrors){
+		if($additionalErrors){
+			foreach ($additionalErrors as $err => $msg) {
+					$this->errors[$err] = $msg;			
+			}
+		}
+
+		//simple way is to store in session error
+		$_SESSION['errors'] = $this->errors;
+		
+		return $this;
+	}
+
 }
 
 ?>

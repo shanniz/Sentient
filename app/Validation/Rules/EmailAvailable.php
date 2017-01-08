@@ -10,11 +10,9 @@ class EmailAvailable extends AbstractRule
 {
 	public function validate($inputEmail){
 		//var_dump($this->db);
-		//die();
 		if(User::get('email', $inputEmail )){	//email already taken
 			return false;
 		}
-
 		return true;
 	}
 

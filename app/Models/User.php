@@ -2,16 +2,23 @@
 
 namespace App\Models;
 
-class User{
+//use Illuminate\Database\Eloquent\Model;
+
+class User// extends Model
+{
 	//users table in the database (in case of eloquent db)
 	protected $table = 'users';
-
-	public function toJson($arr){
+	//protected global $rb;
+	public function toJsonObj($arr){
 		return json_encode($arr);
 	}
 	public function get($col, $val){
-		///return $this->db->find('users');
-		return $this->db->findOne('users', $col.'='.$val);
+		global $rb;
+		//die();		
+		return $rb->findOne('users', $col.'='.$val);
+		///return $this->db->findOne('users', $col.'='.$val);
+		//$user = User::where($col, $val)->first();
+		//return $user;
 	}
 	public function getSpecific( $cols ){
 		$str = '';

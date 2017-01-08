@@ -25,101 +25,106 @@
   <div class="row">
         <div class="col-xs-14 col-sm-14 col-md-5 well well-sm pull-right">
             <legend><i class="glyphicon glyphicon-globe"></i> Sign up!</legend>
+            <div class="panel-body"> 
+                <form action="{{ path_for('auth.signup') }}" method="post" class="form" role="form">
+                    <div class="row form-group">
 
-            <form action="{{ path_for('auth.signup') }}" method="post" class="form" role="form">
-                <div class="row form-group">
+                        <div class="col-xs-4 col-md-4 form-group{{ errors.first_name? ' has-error ': '' }}">
+                            <input class="form-control" name="first_name" placeholder="First Name" type="text" value="{{oldInputData.first_name}}"
+                                required autofocus />
+                            {% if errors.first_name %}
+                                <span class='help-block'> {{ errors.first_name | first }} </span>
+                            {% endif %}
+                        </div>
+                        
+                        <div class="col-xs-4 col-md-4">
+                            <input class="form-control" name="middle_name" placeholder="Middle Name" type="text" />
+                        </div>
 
-                    <div class="col-xs-4 col-md-4 form-group{{ errors.first_name? ' has-error ': '' }}">
-                        <input class="form-control" name="first_name" placeholder="First Name" type="text" value="{{oldInputData.first_name}}"
-                            required autofocus />
-                        {% if errors.first_name %}
-                            <span class='help-block'> {{ errors.first_name | first }} </span>
-                        {% endif %}
+                        <div class="col-xs-4 col-md-4 form-group{{ errors.last_name? ' has-error ': '' }}">
+                            <input class="form-control" name="last_name" placeholder="Last Name" type="text" value="testLname" required />
+                            {% if errors.last_name %}
+                                <span class='help-block'> {{ errors.last_name | first }} </span>
+                            {% endif %}
+                        </div>
                     </div>
                     
-                    <div class="col-xs-4 col-md-4">
-                        <input class="form-control" name="middle_name" placeholder="Middle Name" type="text" />
-                    </div>
-
-                    <div class="col-xs-4 col-md-4 form-group{{ errors.last_name? ' has-error ': '' }}">
-                        <input class="form-control" name="last_name" placeholder="Last Name" type="text" value="testLname" required />
-                        {% if errors.last_name %}
-                            <span class='help-block'> {{ errors.last_name | first }} </span>
+                    <div class="form-group {{ errors.phone? ' has-error ': '' }}" >
+                        <input class="form-control form-group" name="phone" placeholder="Your Phone Number" type="tel" value="{{oldInputData.phone}}" required />
+                        {% if errors.phone %}
+                            <span class='help-block'> {{ errors.phone | first }} </span>
                         {% endif %}
                     </div>
-                </div>
-                
-                <div class="form-group {{ errors.phone? ' has-error ': '' }}" >
-                    <input class="form-control form-group" name="phone" placeholder="Your Phone Number" type="tel" value="{{oldInputData.phone}}" required />
-                    {% if errors.phone %}
-                        <span class='help-block'> {{ errors.phone | first }} </span>
-                    {% endif %}
-                </div>
 
-                
-                    <input class="form-control form-group" name="youremail" placeholder="Your Email" type="email" value="email@domain.com" required />
-                
+                    
+                        <input class="form-control form-group" name="youremail" placeholder="Your Email" type="email" value="email@domain.com" required />
+                    
 
-                <div class="form-group{{ errors.reenteremail? ' has-error ': '' }}">
-                    <input class="form-control form-group" name="reenteremail" placeholder="Re-enter Email" value="email@domain.com" type="email" required/>
-                    {% if errors.reenteremail %}
-                        <span class='help-block'> {{ errors.reenteremail }} </span>
-                    {% endif %}
-                </div>
-
-                <div class="form-group{{ errors.password? ' has-error ': '' }}">
-                    <input class="form-control form-group" name="password" placeholder="Password" type="password" value="123" required />
-                    {% if errors.password %}
-                        <span class='help-block'> {{ errors.password | first }} </span>
-                    {% endif %}
-                </div>
-
-                <label for="">Date of Birth</label>
-                <input class="form-control form-group" name="dateofbirth" placeholder="YYYY-MM-DD" type="text" value="2000-01-01" required />                
-                <!--
-                <div class="row form-group">
-                    <div class="col-xs-4 col-md-4">
-                        <select class="form-control">
-                            <option value="Month">Month</option>
-                        </select>
+                    <div class="form-group{{ errors.reenteremail? ' has-error ': '' }}">
+                        <input class="form-control form-group" name="reenteremail" placeholder="Re-enter Email" value="email@domain.com" type="email" required/>
+                        {% if errors.reenteremail %}
+                            <span class='help-block'> {{ errors.reenteremail }} </span>
+                        {% endif %}
                     </div>
-                    <div class="col-xs-4 col-md-4">
-                        <select class="form-control">
-                            <option value="Day">Day</option>
-                        </select>
+
+                    <div class="form-group{{ errors.password? ' has-error ': '' }}">
+                        <input class="form-control form-group" name="password" placeholder="Password" type="password" value="123" required />
+                        {% if errors.password %}
+                            <span class='help-block'> {{ errors.password | first }} </span>
+                        {% endif %}
                     </div>
-                    <div class="col-xs-4 col-md-4">
-                        <select class="form-control">
-                            <option value="Year">Year</option>
-                        </select>
+
+                    <label for="">Date of Birth</label>
+                    <input class="form-control form-group" name="dateofbirth" placeholder="YYYY-MM-DD" type="text" value="2000-01-01" required />                
+                    <!--
+                    <div class="row form-group">
+                        <div class="col-xs-4 col-md-4">
+                            <select class="form-control">
+                                <option value="Month">Month</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-4 col-md-4">
+                            <select class="form-control">
+                                <option value="Day">Day</option>
+                            </select>
+                        </div>
+                        <div class="col-xs-4 col-md-4">
+                            <select class="form-control">
+                                <option value="Year">Year</option>
+                            </select>
+                        </div>
                     </div>
-                </div>
-                -->
-                <label class="radio-inline">
-                    <input type="radio" name="sex" id="inlineCheckbox1" value="male" checked="checked"/>
-                    Male
-                </label>
-                <label class="radio-inline">
-                    <input type="radio" name="sex" id="inlineCheckbox2" value="female" />
-                    Female
-                </label>
-                <div class="form-group">                    
-                    <select class="form-control">
-                        <option value="" selected disabled>Login As</option>
-                        <option value="ustudent">Student</option>
-                        <option value="uteacher">Teacher</option>
-                        <option value="uparent">Parent</option>
-                        <option value="uadmin">Admin</option>
-                    </select>                                  
-                </div>
-                <br>
-                
-                <div class="form-group">
-                    <button class="btn btn-primary btn-lg btn-block" type="submit">Sign Up</button>
+                    -->
+                    <label class="radio-inline">
+                        <input type="radio" name="sex" id="inlineCheckbox1" value="male" checked="checked"/>
+                        Male
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" name="sex" id="inlineCheckbox2" value="female" />
+                        Female
+                    </label>
+                    <div class="form-group">                    
+                        <select class="form-control">
+                            <option value="" selected disabled>Login As</option>
+                            <option value="ustudent">Student</option>
+                            <option value="uteacher">Teacher</option>
+                            <option value="uparent">Parent</option>
+                            <option value="uadmin">Admin</option>
+                        </select>                                  
+                    </div>
+                    <br>
+                    
+                    <div class="form-group">
+                        <button class="btn btn-primary btn-lg btn-block" type="submit">Sign Up</button>
+                    </div>
+                    
                     <span><a href="#">Need help?</a></span>
-                    <span class="pull-right"><a href="{{ base_url() }}/auth/login">Login</a></span>
-                </div>
-            </form>
+                    <span class="pull-right"><a href="{{ base_url() }}/auth/signin">Signin</a></span>
+
+                    {{csrf.field | raw}}
+                </form>
+            </div>
+
         </div>
     </div>
 

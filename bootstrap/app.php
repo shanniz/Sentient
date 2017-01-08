@@ -35,21 +35,28 @@ $rb::freeze(true);
 
 $app = new \Slim\App([
         'settings' => [
-            'displayErrorDetails' => true
+            'displayErrorDetails' => true,
+                'db' => [
+                'driver' => 'mysql',
+                'host' => 'localhost',
+                'database' => 'sentient_elitedb',
+                'username' => 'sentient_nodejsu',
+                'password' => 'node@123',
+                'charset' => 'utf-8',
+                'collation' => 'utf8_unicode_ci'
+            ]
         ],
-        'db' => [
-            'driver' => 'mysql',
-            'host' => 'localhost',
-            'database' => 'elitedb',
-            'username' => 'nodejsuser',
-            'password' => 'node@123',
-            'charset' => 'utf-8',
-            'collation' => 'utf8_unicode_ci'
-        ]
+        
 ]);
 
-
 $container = $app->getContainer();
+
+//Use Laravel component outside Laravel
+$capsule = new \Illuminate\Database\Capsule\Manager;
+$capsule->addConnection($container['settings']['db']); 
+$capsule->setAsGlobal();
+$capsule->bootEloquent();
+
 $container['view']=function($container){
     //initialize view path so dont need provide path everytime
     $view = new \Slim\Views\Twig(__DIR__ . '/../resources/views', 
@@ -72,6 +79,10 @@ $container['db'] = function($container) use ($rb){
 };
 
 
+//$container['el_db'] = function($container) use ($capsule){
+//    return $capsule;
+//};
+
 /*$container['EmailAvailable'] = function($container){
     return new App\Validation\Rules\EmailAvailable($container);
 };*/
@@ -91,8 +102,20 @@ $container['AuthenticationController'] = function($container){
     return new \App\Controllers\Auth\AuthenticationController($container);
 };
 
+
+$container['csrf'] = function($container){
+    return new \Slim\Csrf\Guard;
+};
+
+$container['authentication'] = function($container){
+    return new \App\Auth\Authentication;
+};
+
 $app->add(new \App\Middleware\ValidationErrorsMiddleware($container));
 $app->add(new \App\Middleware\OldInputMiddleware($container));
+$app->add(new \App\Middleware\CsrfViewMiddleware($container));
+
+$app->add($container->csrf);
 
 //For custom validation rules like Email is available
 v::with('App\\Validation\\Rules\\');

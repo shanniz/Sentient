@@ -15,8 +15,11 @@ $app->get('/home',  'HomeController:getHome')->setName('homepage');
 $app->get('/auth/signup', 'AuthenticationController:getSignUp')->setName('auth.signup');
 $app->post('/auth/signup', 'AuthenticationController:postSignUp');
 
-$app->get('/auth/login', 'AuthenticationController:getLogin')->setName('auth.login');
-$app->post('/auth/login', 'AuthenticationController:postLogin');
+$app->get('/auth/signin', 'AuthenticationController:getSignIn')->setName('auth.signin');
+$app->post('/auth/signin', 'AuthenticationController:postSignIn');
+
+//$app->get('/auth/login', 'AuthenticationController:getLogin')->setName('auth.login');
+//$app->post('/auth/login', 'AuthenticationController:postLogin');
 
 //
 

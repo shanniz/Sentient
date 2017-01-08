@@ -1,0 +1,54 @@
+{% extends '/templates/app.twig' %}
+
+{% block content %}
+	
+
+    <!-- Errors from server, display in error view bars -->
+    <!--
+    {% if errors.password %}
+    <div class="alert alert-danger fade in">
+        <a href="#" class="close" data-dismiss="alert">&times;</a>
+        <strong>Error!</strong> {{ errors.password | first }}
+    </div>
+    {% endif %}
+    -->
+
+    {% if errors.loginError %}
+    <div class="alert alert-danger fade in">
+        <a href="#" class="close" data-dismiss="alert">&times;</a>
+        <strong>Error!</strong> {{ errors.loginError }}
+    </div>
+    {% endif %}
+
+  <div class="row">
+        <div class="col-xs-14 col-sm-14 col-md-4 well well-sm pull-right">
+            <legend><i class="glyphicon glyphicon-globe"></i> SignIn</legend>
+            
+            <div class="panel-body">            
+                <form action="{{ path_for('auth.signin') }}" method="post" class="form" role="form">
+                    <div class="form-group{{ errors.email? ' has-error ': '' }}">
+                        <input class="form-control form-group" name="youremail" placeholder="email/phone" type="text" value="{{oldInputData.youremail}}" required />
+                        {% if errors.youremail %}
+                            <span class='help-block'> {{ errors.youremail }} </span>
+                        {% endif %}
+                    </div>
+                    <div class="form-group{{ errors.password? ' has-error ': '' }}">
+                        <input class="form-control form-group" name="password" placeholder="Password123" type="password" value="{{oldInputData.password}}" required />                    
+                            <span class='help-block'> {% if errors.password %}  {{ errors.password | first }} {% endif %} </span>                    
+                    </div>
+                    <br>
+                    
+                    <div class="form-group">
+                        <button class="btn btn-primary btn-lg btn-block" type="submit">Sign In</button>
+                    </div>
+                    <span><a href="#">Forgot Password?</a></span>
+                    <span class="pull-right"><a href="{{ base_url() }}/auth/signup">Signup Here</a></span>
+
+                    {{csrf.field | raw}}
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+{% endblock %}

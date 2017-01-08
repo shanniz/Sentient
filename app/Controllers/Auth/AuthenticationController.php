@@ -19,18 +19,16 @@ class AuthenticationController extends Controller{
 	}
 
 	public function getLogin($request, $response){
-		$this->view->render($response, 'auth/login.twig');
+		return $this->view->render($response, 'auth/login.twig');
 	}
 
 	public function postLogin($request, $response){
 		$params =  $request->getParams();	
 		$verificationErrors =null;
-
 		//or phone
 		$creds = array('email' => $this->writeDoubleQuote($params['youremail']),
 			//,'phone' => $params['phone'] 
 			'password' => $params['password']);
-		
 
 		$logResp = User::authenticateUserLogin( $creds ) ;
 		if ($logResp['error']) {
@@ -52,8 +50,28 @@ class AuthenticationController extends Controller{
 	}
 
 
+	public function getSignIn($request, $response){
+		return $this->view->render($response, 'auth/signin.twig');
+	}
+	public function postSignIn($request, $response){
+		$auth = $this->authentication->attempt(
+			$request->getParam('youremail'),
+			$request->getParam('password')
+		);
+		$verificationErrors =null;
+		if (!$auth) {
+			
+			$verificationErrors['loginError'] = 'Invalid email/phone/password';
+			$validation = $this->validator->addAdditionalErrors($verificationErrors);
+
+			return $response->withRedirect($this->router->pathFor('auth.signin'));
+		}
+
+		return $response->withRedirect($this->router->pathFor('homepage'));
+	}
+
 	public function getSignUp($request, $response){
-		$this->view->render($response, 'auth/signup.twig');
+		return $this->view->render($response, 'auth/signup.twig');
 	}
 
 	public function postSignUp($request, $response){
@@ -83,10 +101,10 @@ class AuthenticationController extends Controller{
 			//User::get('phone', $this->writeDoubleQuote($params['phone'])
 			)){
 			//return $response->withRedirect($this->router->pathFor('auth.signup'));	
-			$additionalValidErrors['reregister'] = 'This email is already registered. Please enter a differnt Email.';
+			$additionalValidErrors['reregister'] = 'This email is already registered. Please enter a different Email.';
 		}
 		if(User::get('phone', $this->writeDoubleQuote($params['phone'])) ){
-			$additionalValidErrors['reregister'] = 'This phone number is already registered. Please enter a differnt Phone number.';
+			$additionalValidErrors['reregister'] = 'This phone number is already registered. Please enter a different Phone number.';
 		}
 
 		$validation = $this->validator->validate($request, []
