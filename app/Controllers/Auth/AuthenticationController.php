@@ -14,7 +14,6 @@ use Respect\Validation\Validator as v;
 class AuthenticationController extends Controller{
 
 	public function writeDoubleQuote($v){
-		//return $v;
 		return '"'.$v.'"';
 	}
 
@@ -76,13 +75,7 @@ class AuthenticationController extends Controller{
 
 	public function postSignUp($request, $response){
 		$params =  $request->getParams();
-		$additionalValidErrors = null;
-		if(//$request->getParam('reenteremail') &&  //reenter email for signup case
-			($request->getParam('youremail')!= $request->getParam('reenteremail'))){
-			$additionalValidErrors['reenteremail'] = 'Email must be the same, mismatch found';
-			//$validation->errors['reenteremail'] = 'Email must be the same, mismatch found';
-		}
-
+		
 		$validation = $this->validator->validate($request, [
 			'phone' => v::noWhitespace()->notEmpty()->phone(),
 			/////Email available is our custom EmailAvailable Rule; class name becomes rule name
@@ -92,31 +85,31 @@ class AuthenticationController extends Controller{
 			'last_name' => v::noWhitespace()->notEmpty()->alpha(),
 			'password' => v::noWhitespace()->notEmpty()
 		]
-		, $additionalValidErrors);
-		if ($validation->failed()) {
+		//, $additionalValidErrors
+		);
+		/*if ($validation->failed()) {
 			return $response->withRedirect($this->router->pathFor('auth.signup'));
-		}
+		}*/
 		
-		if(User::get('email', $this->writeDoubleQuote($params['youremail']) 
-			//User::get('phone', $this->writeDoubleQuote($params['phone'])
-			)){
-			//return $response->withRedirect($this->router->pathFor('auth.signup'));	
+		$additionalValidErrors = null;
+		if( ($request->getParam('youremail')!= $request->getParam('reenteremail'))) {
+			$additionalValidErrors['reenteremail'] = 'Re-entered Email must be the same, mismatch found';
+		}
+
+		if(User::get('email', $this->writeDoubleQuote($params['youremail']) )){
 			$additionalValidErrors['reregister'] = 'This email is already registered. Please enter a different Email.';
 		}
 		if(User::get('phone', $this->writeDoubleQuote($params['phone'])) ){
 			$additionalValidErrors['reregister'] = 'This phone number is already registered. Please enter a different Phone number.';
 		}
 
-		$validation = $this->validator->validate($request, []
-		, $additionalValidErrors);
+		$validation = $this->validator->addAdditionalErrors($additionalValidErrors);
 		if ($validation->failed()) {
 			return $response->withRedirect($this->router->pathFor('auth.signup'));
 		}
 
 		/*'firstname', 'middlename' ,  'lastname', 'youremail', 'reenteremail', 'password', 'dateofbirth' ,'sex' */
 
-		///////var_dump( User::get('email', $this->writeDoubleQuote($params['youremail']) ) );
-		
 		$id = User::createUser( array (
 			'first_name'=>$params['first_name'], 
 			'last_name'=>$params['last_name'], 
@@ -126,7 +119,7 @@ class AuthenticationController extends Controller{
 			'phone'=> $params['phone'], 
 		    'created'=>  date("Y-m-d H:i:s"), //'2016-09-30 09:54:44', 
 		    'email'=> $params['youremail'], 
-		    'password'=> $params['password']  
+		    'password'=> password_hash($params['password'], PASSWORD_DEFAULT)  
 		    )
 		);
 		//var_dump($this->db->find('users', 'id=1'));

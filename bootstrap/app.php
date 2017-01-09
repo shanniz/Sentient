@@ -52,10 +52,10 @@ $app = new \Slim\App([
 $container = $app->getContainer();
 
 //Use Laravel component outside Laravel
-$capsule = new \Illuminate\Database\Capsule\Manager;
-$capsule->addConnection($container['settings']['db']); 
-$capsule->setAsGlobal();
-$capsule->bootEloquent();
+//$capsule = new \Illuminate\Database\Capsule\Manager;
+//$capsule->addConnection($container['settings']['db']); 
+//$capsule->setAsGlobal();
+//$capsule->bootEloquent();
 
 $container['view']=function($container){
     //initialize view path so dont need provide path everytime

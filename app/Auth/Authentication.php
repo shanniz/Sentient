@@ -40,11 +40,9 @@ class Authentication{
 			return false;
 		}
 
-		////if(password_verify($password, $user->password)){
-		if($password == $user->password){
+		if(password_verify($password, $user->password)){
+		//if($password == $user->password){
 			$_SESSION['user'] = $user->id;
-			//var_dump($_SESSION['user']);
-			//die();
 			return true;
 		}
 		return false;

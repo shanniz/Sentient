@@ -57,11 +57,11 @@
                     </div>
 
                     
-                        <input class="form-control form-group" name="youremail" placeholder="Your Email" type="email" value="email@domain.com" required />
+                        <input class="form-control form-group" name="youremail" placeholder="Your Email" type="email" value="{{oldInputData.youremail}}" required />
                     
 
                     <div class="form-group{{ errors.reenteremail? ' has-error ': '' }}">
-                        <input class="form-control form-group" name="reenteremail" placeholder="Re-enter Email" value="email@domain.com" type="email" required/>
+                        <input class="form-control form-group" name="reenteremail" placeholder="Re-enter Email" value="{{oldInputData.reenteremail}}" type="email" required/>
                         {% if errors.reenteremail %}
                             <span class='help-block'> {{ errors.reenteremail }} </span>
                         {% endif %}
