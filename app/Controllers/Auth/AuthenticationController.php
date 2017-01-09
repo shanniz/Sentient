@@ -17,37 +17,11 @@ class AuthenticationController extends Controller{
 		return '"'.$v.'"';
 	}
 
-	public function getLogin($request, $response){
-		return $this->view->render($response, 'auth/login.twig');
+
+	public function getSignOut($request, $response){
+		$this->authentication->logout();
+		return $response->withRedirect($this->router->pathFor('auth.signin'));
 	}
-
-	public function postLogin($request, $response){
-		$params =  $request->getParams();	
-		$verificationErrors =null;
-		//or phone
-		$creds = array('email' => $this->writeDoubleQuote($params['youremail']),
-			//,'phone' => $params['phone'] 
-			'password' => $params['password']);
-
-		$logResp = User::authenticateUserLogin( $creds ) ;
-		if ($logResp['error']) {
-			$verificationErrors['loginError'] = $logResp['error'];
-			//return $response->withRedirect($this->router->pathFor('auth.login'));
-		}
-
-
-		$validation = $this->validator->validate($request, [
-			'youremail' => v::noWhitespace()->notEmpty(), //it may contain phone number now //->email(),
-			'password' => v::noWhitespace()->notEmpty()
-		]
-		,$verificationErrors);
-		if ($validation->failed()) {
-			return $response->withRedirect($this->router->pathFor('auth.login'));
-		}				
-
-		return $response->withRedirect($this->router->pathFor('homepage')); 
-	}
-
 
 	public function getSignIn($request, $response){
 		return $this->view->render($response, 'auth/signin.twig');
@@ -122,6 +96,8 @@ class AuthenticationController extends Controller{
 		    'password'=> password_hash($params['password'], PASSWORD_DEFAULT)  
 		    )
 		);
+
+		$this->authentication->attempt($params['youremail'], $params['password']);
 		//var_dump($this->db->find('users', 'id=1'));
 		////$this->view->render($response, 'auth/signup.twig');
 		return $response->withRedirect($this->router->pathFor('homepage')); 
