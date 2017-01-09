@@ -26,7 +26,6 @@ class User// extends Model
 			$str.= $key .'='. $value .' AND ';
 		}
 		return $this->db->findOne('users', substr($str,0,-5) );
-		//return null;
 	}
 
 	public function authenticateUserLogin($cols){

@@ -68,6 +68,12 @@ $container['view']=function($container){
         $container->router,
         $container->request->getUri()
     ));
+
+    $view->getEnvironment()->addGlobal('authentication', [
+        'check' => $container->authentication->check(),
+        'user' => $container->authentication->user()
+    ]);
+
     return $view;
 };
 

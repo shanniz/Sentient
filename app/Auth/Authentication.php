@@ -11,6 +11,24 @@ use App\Models\User;
 * 
 */
 class Authentication{
+
+	//returns currently loggedin user
+	public function user(){
+		//var_dump(User::get('id', $_SESSION['user']));
+		//die();
+		if(!$_SESSION['user']){
+			return null;
+		}
+		//var_dump(User::get('id', $_SESSION['user'])->email);
+		//die();
+
+		return User::get('id', $_SESSION['user']); //->email;
+	}
+	//if user is logged in
+	public function check(){
+		return isset($_SESSION['user']);
+	}
+
 	public function attempt($email, $password){
 		//get user by phone/email
 		$user = User::get('email', '"'.$email.'"');
@@ -25,6 +43,8 @@ class Authentication{
 		////if(password_verify($password, $user->password)){
 		if($password == $user->password){
 			$_SESSION['user'] = $user->id;
+			//var_dump($_SESSION['user']);
+			//die();
 			return true;
 		}
 		return false;
