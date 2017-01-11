@@ -9,10 +9,8 @@ use Respect\Validation\Rules\AbstractRule;
 class EmailAvailable extends AbstractRule
 {
 	public function validate($inputEmail){
-		//var_dump($this->db);
 		if(User::get('email', '"' . $inputEmail . '"' )){	//email already taken
-			//var_dump('email already registered..');
-			//die();
+			///$this->flash->addMessage('error', 'This email is already registered. Please enter a different Email.');
 			return false;
 		}
 		return true;

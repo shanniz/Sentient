@@ -19,7 +19,6 @@ class HomeController extends Controller{
 
 	public function getHome($request, $response){
 		//$this->container->rb->find('users');
-		//var_dump($this->db->find('users'));
 		//var_dump($this->db->find('users', 'id=1'));  var_dump($this->db->findOne('users', 'id=1'));
 		//In case of using eloquent DB
 		//User::get([ 'id' =>1]);
@@ -30,7 +29,9 @@ class HomeController extends Controller{
 		//$user = User::where('email', 'email@domain.com')->first();
 		//var_dump($rb->findOne('users', 'email="email@domain.com"'));
 		//die();
-		
+		if(!isset($_SESSION['user'])){
+			return $response->withRedirect($this->router->pathFor('auth.signin'));
+		}
 		$this->container->view->render($response, 'home.twig');
 		/////return json_encode(  array('Home controller-Name ' => $request->getParam('name')) );
 	}
