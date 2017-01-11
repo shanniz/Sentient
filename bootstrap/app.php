@@ -74,6 +74,8 @@ $container['view']=function($container){
         'user' => $container->authentication->user()
     ]);
 
+    $view->getEnvironment()->addGlobal('flash', $container->flash);
+
     return $view;
 };
 
@@ -115,6 +117,10 @@ $container['csrf'] = function($container){
 
 $container['authentication'] = function($container){
     return new \App\Auth\Authentication;
+};
+
+$container['flash'] = function($container){
+    return new \Slim\Flash\Messages;
 };
 
 $app->add(new \App\Middleware\ValidationErrorsMiddleware($container));

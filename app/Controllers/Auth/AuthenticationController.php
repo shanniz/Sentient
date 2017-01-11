@@ -24,6 +24,7 @@ class AuthenticationController extends Controller{
 	}
 
 	public function getSignIn($request, $response){
+		////$this->flash->addMessage('error', 'this is error test');
 		return $this->view->render($response, 'auth/signin.twig');
 	}
 	public function postSignIn($request, $response){
@@ -33,10 +34,9 @@ class AuthenticationController extends Controller{
 		);
 		$verificationErrors =null;
 		if (!$auth) {
-			
-			$verificationErrors['loginError'] = 'Invalid email/phone/password';
-			$validation = $this->validator->addAdditionalErrors($verificationErrors);
-
+			$this->flash->addMessage('error', 'Invalid email/phone/password');
+			//$verificationErrors['loginError'] = 'Invalid email/phone/password';
+			//$validation = $this->validator->addAdditionalErrors($verificationErrors);
 			return $response->withRedirect($this->router->pathFor('auth.signin'));
 		}
 
@@ -58,27 +58,29 @@ class AuthenticationController extends Controller{
 			'first_name' => v::noWhitespace()->notEmpty()->alpha(),
 			'last_name' => v::noWhitespace()->notEmpty()->alpha(),
 			'password' => v::noWhitespace()->notEmpty()
-		]
-		//, $additionalValidErrors
-		);
-		/*if ($validation->failed()) {
+		]);
+		if ($validation->failed()) {
 			return $response->withRedirect($this->router->pathFor('auth.signup'));
-		}*/
+		}
 		
-		$additionalValidErrors = null;
+		$additionalValidErrors = false;
 		if( ($request->getParam('youremail')!= $request->getParam('reenteremail'))) {
-			$additionalValidErrors['reenteremail'] = 'Re-entered Email must be the same, mismatch found';
+			$this->flash->addMessage('error', 'Re-entered Email must be the same, mismatch found');
+			return $response->withRedirect($this->router->pathFor('auth.signup'));
 		}
 
 		if(User::get('email', $this->writeDoubleQuote($params['youremail']) )){
-			$additionalValidErrors['reregister'] = 'This email is already registered. Please enter a different Email.';
+			//$additionalValidErrors['reregister'] = 'This email is already registered. Please enter a different Email.';
+			$this->flash->addMessage('error', 'This email is already registered. Please enter a different Email.');
+			$additionalValidErrors = true;
 		}
 		if(User::get('phone', $this->writeDoubleQuote($params['phone'])) ){
-			$additionalValidErrors['reregister'] = 'This phone number is already registered. Please enter a different Phone number.';
+			$this->flash->addMessage('error', 'This phone number is already registered. Please enter a different Phone number.');
+			$additionalValidErrors = true;
 		}
 
-		$validation = $this->validator->addAdditionalErrors($additionalValidErrors);
-		if ($validation->failed()) {
+		//$validation = $this->validator->addAdditionalErrors($additionalValidErrors);
+		if ($additionalValidErrors == true) {
 			return $response->withRedirect($this->router->pathFor('auth.signup'));
 		}
 
@@ -97,6 +99,8 @@ class AuthenticationController extends Controller{
 		    )
 		);
 
+		$this->flash->addMessage('info', 'You have successfully signed up to the sentient education!');
+		//Login now
 		$this->authentication->attempt($params['youremail'], $params['password']);
 		//var_dump($this->db->find('users', 'id=1'));
 		////$this->view->render($response, 'auth/signup.twig');

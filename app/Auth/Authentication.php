@@ -14,14 +14,9 @@ class Authentication{
 
 	//returns currently loggedin user
 	public function user(){
-		//var_dump(User::get('id', $_SESSION['user']));
-		//die();
 		if(!$_SESSION['user']){
 			return null;
 		}
-		//var_dump(User::get('id', $_SESSION['user'])->email);
-		//die();
-
 		return User::get('id', $_SESSION['user']); //->email;
 	}
 	//if user is logged in
