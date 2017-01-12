@@ -106,10 +106,17 @@ $container['HomeController'] = function($container){
 };
 
 $container['AuthenticationController'] = function($container){
-    //return new \App\Controllers\HomeController($container->view); //will be passed to base class Controller
     return new \App\Controllers\Auth\AuthenticationController($container);
 };
 
+//Use dependency injection to get rid of add controllers additions
+$container['PasswordController'] = function($container){
+    return new \App\Controllers\Auth\PasswordController($container);
+};
+
+$container['TestController'] = function($container){
+    return new \App\Controllers\TestController($container);
+};
 
 $container['csrf'] = function($container){
     return new \Slim\Csrf\Guard;

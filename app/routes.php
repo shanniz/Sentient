@@ -10,6 +10,7 @@
 $app->get('/',  'HomeController:getHome');
 
 $app->get('/home',  'HomeController:getHome')->setName('homepage');
+$app->get('/test',  'TestController:getTest')->setName('testpage');
 //$app->post('/home',  'HomeController:post');
 
 $app->get('/auth/signup', 'AuthenticationController:getSignUp')->setName('auth.signup');
@@ -17,7 +18,8 @@ $app->post('/auth/signup', 'AuthenticationController:postSignUp');
 
 $app->get('/auth/signin', 'AuthenticationController:getSignIn')->setName('auth.signin');
 $app->post('/auth/signin', 'AuthenticationController:postSignIn');
-
+$app->get('/auth/changepassword', 'PasswordController:getChangePassword')->setName('auth.changepassword');
+$app->post('/auth/changepassword', 'PasswordController:postChangePassword');
 
 $app->get('/auth/signout', 'AuthenticationController:getSignOut')->setName('auth.signout');
 

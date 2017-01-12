@@ -2,16 +2,6 @@
 
 {% block content %}
 	
-
-    <!-- Errors from server, display in error view bars -->
-    <!--
-    {% if errors.password %}
-    <div class="alert alert-danger fade in">
-        <a href="#" class="close" data-dismiss="alert">&times;</a>
-        <strong>Error!</strong> {{ errors.password | first }}
-    </div>
-    {% endif %}
-    -->
   
   <div class="row">
         <div class="col-xs-14 col-sm-14 col-md-4 well well-sm pull-right">
@@ -20,9 +10,9 @@
             <div class="panel-body">            
                 <form action="{{ path_for('auth.signin') }}" method="post" class="form" role="form">
                     <div class="form-group{{ errors.email? ' has-error ': '' }}">
-                        <input class="form-control form-group" name="youremail" placeholder="email/phone" type="text" value="{{oldInputData.youremail}}" required />
-                        {% if errors.youremail %}
-                            <span class='help-block'> {{ errors.youremail }} </span>
+                        <input class="form-control form-group" name="your_email" placeholder="email/phone" type="text" value="{{oldInputData.your_email}}" required />
+                        {% if errors.your_email %}
+                            <span class='help-block'> {{ errors.your_email }} </span>
                         {% endif %}
                     </div>
                     <div class="form-group{{ errors.password? ' has-error ': '' }}">

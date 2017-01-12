@@ -31,16 +31,18 @@ class AuthenticationController extends Controller{
 	}
 	public function postSignIn($request, $response){
 		$auth = $this->authentication->attempt(
-			$request->getParam('youremail'),
+			$request->getParam('your_email'),
 			$request->getParam('password')
 		);
-		$verificationErrors =null;
+
+
 		if (!$auth) {
 			$this->flash->addMessage('error', 'Invalid email/phone/password');
 			//$verificationErrors['loginError'] = 'Invalid email/phone/password';
-			//$validation = $this->validator->addAdditionalErrors($verificationErrors);
 			return $response->withRedirect($this->router->pathFor('auth.signin'));
 		}
+
+		$this->flash->addMessage('info', 'Welcome to Sentient Eduction!');
 
 		return $response->withRedirect($this->router->pathFor('homepage'));
 	}
@@ -52,7 +54,7 @@ class AuthenticationController extends Controller{
 	public function postSignUp($request, $response){
 		$params =  $request->getParams();
 		
-		if( ($request->getParam('youremail')!= $request->getParam('reenteremail'))) {
+		if( ($request->getParam('your_email')!= $request->getParam('reenter_email'))) {
 			$this->flash->addMessage('error', 'Re-entered Email must be the same, mismatch found');
 			return $response->withRedirect($this->router->pathFor('auth.signup'));
 		}
@@ -60,8 +62,7 @@ class AuthenticationController extends Controller{
 		$validation = $this->validator->validate($request, [
 			'phone' => v::noWhitespace()->notEmpty()->phone()->PhoneAvailable(),
 			/////Email available is our custom EmailAvailable Rule; class name becomes rule name
-			'youremail' => v::noWhitespace()->notEmpty()->email()->EmailAvailable(),
-			//'youremail' => v::
+			'your_email' => v::noWhitespace()->notEmpty()->email()->EmailAvailable(),
 			'first_name' => v::noWhitespace()->notEmpty()->alpha(),
 			'last_name' => v::noWhitespace()->notEmpty()->alpha(),
 			'password' => v::noWhitespace()->notEmpty()
@@ -71,12 +72,11 @@ class AuthenticationController extends Controller{
 		}
 		
 
-		/*if(User::get('email', $this->writeDoubleQuote($params['youremail']) )){
+		/*if(User::get('email', $this->writeDoubleQuote($params['your_email']) )){
 			$this->flash->addMessage('error', 'This email is already registered. Please enter a different Email.');
 			$additionalValidErrors = true;
 		}*/
 		
-		/*'firstname', 'middlename' ,  'lastname', 'youremail', 'reenteremail', 'password', 'dateofbirth' ,'sex' */
 
 		$id = User::createUser( array (
 			'first_name'=>$params['first_name'], 
@@ -86,14 +86,14 @@ class AuthenticationController extends Controller{
 			'dob'=> $params['dateofbirth'], 
 			'phone'=> $params['phone'], 
 		    'created'=>  date("Y-m-d H:i:s"), //'2016-09-30 09:54:44', 
-		    'email'=> $params['youremail'], 
+		    'email'=> $params['your_email'], 
 		    'password'=> password_hash($params['password'], PASSWORD_DEFAULT)  
 		    )
 		);
 
 		$this->flash->addMessage('info', 'You have successfully signed up to the sentient education!');
 		//Login now
-		$this->authentication->attempt($params['youremail'], $params['password']);
+		$this->authentication->attempt($params['your_email'], $params['password']);
 		return $response->withRedirect($this->router->pathFor('homepage')); 
 	}
 }

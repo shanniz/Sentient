@@ -14,7 +14,6 @@ class User// extends Model
 	}
 	public function get($col, $val){
 		global $rb;
-		//die();		
 		return $rb->findOne('users', $col.'='.$val);
 		///return $this->db->findOne('users', $col.'='.$val);
 		//$user = User::where($col, $val)->first();
@@ -63,6 +62,15 @@ class User// extends Model
 		//	'created'=>'2016-09-30 09:54:44', 'email'=>'a@a.c', 'password'=>'123')
   		$id = $this->db->store( $usr );
   		return $id;
+	}
+
+	public function setPassword($newPassword, $uid){
+		//
+		global $rb;
+		$usr = $rb->findOne('users', 'id='.$uid);
+		$usr->password = password_hash($newPassword, PASSWORD_DEFAULT);
+		$id = $rb->store( $usr );
+		return $id;
 	}
 }
 
